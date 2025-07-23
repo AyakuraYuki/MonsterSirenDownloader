@@ -4,9 +4,9 @@ namespace MonsterSirenDownloader.Core.Model;
 
 public class SongsRsp
 {
-    [JsonPropertyName("code")] public int Code { get; init; } = 0;
+    [JsonPropertyName("code")] public int Code { get; init; }
     [JsonPropertyName("msg")] public string Msg { get; init; } = "";
-    [JsonPropertyName("data")] public SongsRspBody? Data { get; init; }
+    [JsonPropertyName("data")] public SongsRspBody Data { get; init; } = new();
 }
 
 public class SongsRspBody

@@ -23,9 +23,14 @@ public partial class MonsterSiren
         }
 
         var rsp = await response.Content.ReadFromJsonAsync<SongsRsp>();
-        songs = rsp?.Data?.Songs ?? [];
-        autoplay = rsp?.Data?.Autoplay ?? "";
+        if (rsp is null)
+        {
+            _logger.LogError("[Songs] unabled to resolve response data => {Raw}", await response.Content.ReadAsStringAsync());
+            return (songs, autoplay);
+        }
 
+        songs = rsp.Data.Songs;
+        autoplay = rsp.Data.Autoplay;
         return (songs, autoplay);
     }
 
@@ -46,7 +51,16 @@ public partial class MonsterSiren
         }
 
         var rsp = await response.Content.ReadFromJsonAsync<SongRsp>();
-        return rsp?.Data ?? null;
+        if (rsp is null)
+        {
+            _logger.LogError("[Song] unabled to resolve response data => {Raw}", await response.Content.ReadAsStringAsync());
+            return null;
+        }
+
+        if (rsp.Code == 0) return rsp.Data ?? null; // success
+
+        _logger.LogError("[Song] cid {Cid} => ({Code}) {Msg}", cid, rsp?.Code, rsp?.Msg);
+        return null;
     }
 
     /// <summary>
@@ -63,7 +77,10 @@ public partial class MonsterSiren
         }
 
         var rsp = await response.Content.ReadFromJsonAsync<AlbumsRsp>();
-        return rsp?.Data ?? [];
+        if (rsp is not null) return rsp.Data;
+
+        _logger.LogError("[Albums] unabled to resolve response data => {Raw}", await response.Content.ReadAsStringAsync());
+        return [];
     }
 
     /// <summary>
@@ -83,7 +100,10 @@ public partial class MonsterSiren
         }
 
         var rsp = await response.Content.ReadFromJsonAsync<AlbumRsp>();
-        return rsp?.Data ?? null;
+        if (rsp is not null) return rsp.Data ?? null;
+
+        _logger.LogError("[Album] unabled to resolve response data => {Raw}", await response.Content.ReadAsStringAsync());
+        return null;
     }
 
     /// <summary>
@@ -98,11 +118,14 @@ public partial class MonsterSiren
         using var response = await _sharedClient.GetAsync($"/api/album/{cid}/detail");
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogError("[Album] error status code: {ResponseStatusCode}", response.StatusCode);
+            _logger.LogError("[AlbumWithSongs] error status code: {ResponseStatusCode}", response.StatusCode);
             return null;
         }
 
         var rsp = await response.Content.ReadFromJsonAsync<AlbumRsp>();
-        return rsp?.Data ?? null;
+        if (rsp is not null) return rsp.Data ?? null;
+
+        _logger.LogError("[AlbumWithSongs] unabled to resolve response data => {Raw}", await response.Content.ReadAsStringAsync());
+        return null;
     }
 }
