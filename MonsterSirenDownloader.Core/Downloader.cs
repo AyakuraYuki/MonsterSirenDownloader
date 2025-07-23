@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
-using System.Text;
 using System.Net.Http.Headers;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using MonsterSirenDownloader.Core.Model;
 
@@ -11,8 +11,8 @@ public partial class MonsterSiren
     private const string SaveTo = "./monster-siren";
 
     private readonly int _maxConcurrency;
-    private readonly SemaphoreSlim _semaphore;
     private readonly ConcurrentQueue<DownloadTask> _queue;
+    private readonly SemaphoreSlim _semaphore;
 
     private async Task<Album?> _fetchAlbumSongs(Album? album)
     {
@@ -153,11 +153,11 @@ public partial class MonsterSiren
             }
         }
 
-        File.Move(sourceFileName: tempDst, destFileName: dst);
+        File.Move(tempDst, dst);
     }
 
     /// <summary>
-    /// 透传路径参数的同时，保证路径目录一定存在
+    ///     透传路径参数的同时，保证路径目录一定存在
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
@@ -169,7 +169,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 保存专辑信息
+    ///     保存专辑信息
     /// </summary>
     /// <param name="album">专辑对象</param>
     /// <param name="saveTo">保存路径</param>
@@ -204,7 +204,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 获取链接关联文件的大小，取自 Content-Length
+    ///     获取链接关联文件的大小，取自 Content-Length
     /// </summary>
     /// <param name="link"></param>
     /// <returns></returns>

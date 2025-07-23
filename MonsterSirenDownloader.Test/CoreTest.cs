@@ -7,8 +7,8 @@ namespace MonsterSirenDownloader.Test;
 
 public class CoreTest
 {
-    private ILogger<CoreTest> logger;
     private MonsterSiren instance;
+    private ILogger<CoreTest> logger;
 
     [SetUp]
     public void Setup()

@@ -7,7 +7,7 @@ namespace MonsterSirenDownloader.Core;
 public partial class MonsterSiren
 {
     /// <summary>
-    /// 查询所有歌曲
+    ///     查询所有歌曲
     /// </summary>
     /// <returns>按时间从新到旧排序的所有歌曲的列表</returns>
     public async Task<(Song[], string)> Songs()
@@ -30,7 +30,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 查询歌曲信息
+    ///     查询歌曲信息
     /// </summary>
     /// <param name="cid">歌曲ID，来自歌曲列表接口返回的cid参数</param>
     /// <returns>包含临时下载链接的歌曲信息</returns>
@@ -50,7 +50,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 查询专辑列表
+    ///     查询专辑列表
     /// </summary>
     /// <returns>按时间从新到旧排序的所有专辑的列表</returns>
     public async Task<Album[]> Albums()
@@ -67,7 +67,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 查询专辑信息
+    ///     查询专辑信息
     /// </summary>
     /// <param name="cid">专辑ID，来自专辑列表接口返回的cid参数</param>
     /// <returns></returns>
@@ -87,7 +87,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 查询专辑信息，包含歌曲列表
+    ///     查询专辑信息，包含歌曲列表
     /// </summary>
     /// <param name="cid">专辑ID，来自专辑列表接口返回的cid参数</param>
     /// <returns></returns>

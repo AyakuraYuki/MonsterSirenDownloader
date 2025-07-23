@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace MonsterSirenDownloader.Test;
@@ -44,7 +45,7 @@ public class Tests
         Console.WriteLine($"Company: {assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company ?? "Not specified"}"); // Company
 
         Console.WriteLine("\n=== Additional Information ===");
-        Console.WriteLine($"Debug Build: {assembly.GetCustomAttributes(typeof(System.Diagnostics.DebuggableAttribute), false).Length > 0}"); // Check if running in debug mode
+        Console.WriteLine($"Debug Build: {assembly.GetCustomAttributes(typeof(DebuggableAttribute), false).Length > 0}"); // Check if running in debug mode
         Console.WriteLine($"Assembly Location: {assembly.Location}"); // Get location
     }
 }

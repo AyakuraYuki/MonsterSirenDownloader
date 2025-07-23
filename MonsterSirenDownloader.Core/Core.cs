@@ -7,9 +7,9 @@ public partial class MonsterSiren
 {
     private const string BaseUrl = "https://monster-siren.hypergryph.com";
     private const string Referer = "https://monster-siren.hypergryph.com/";
+    private readonly ILogger<MonsterSiren> _logger;
 
     private readonly HttpClient _sharedClient;
-    private readonly ILogger<MonsterSiren> _logger;
 
     public MonsterSiren()
     {
@@ -22,7 +22,7 @@ public partial class MonsterSiren
         _sharedClient.DefaultRequestHeaders.Add("User-Agent", $".Net/{Environment.Version} MonsterSirenDownloader/1.0.0");
 
         _maxConcurrency = 3;
-        _semaphore = new SemaphoreSlim(initialCount: _maxConcurrency, maxCount: _maxConcurrency);
+        _semaphore = new SemaphoreSlim(_maxConcurrency, _maxConcurrency);
         _queue = new ConcurrentQueue<DownloadTask>();
 
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddSimpleConsole(options =>
@@ -35,7 +35,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 核心逻辑入口
+    ///     核心逻辑入口
     /// </summary>
     public async Task DownloadTracks()
     {
@@ -81,7 +81,7 @@ public partial class MonsterSiren
     }
 
     /// <summary>
-    /// 释放资源
+    ///     释放资源
     /// </summary>
     public void Dispose()
     {
