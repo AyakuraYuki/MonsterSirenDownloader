@@ -9,7 +9,9 @@
         x:Class="MonsterSirenDownloader.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/favicon.ico"
-        Title="Monster Siren Downloader">
+        Title="Monster Siren Downloader"
+        Width="640"
+        Height="640">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE, to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
@@ -110,19 +112,21 @@
                         CornerRadius="4">
                     <ScrollViewer x:Name="ConsoleScrollViewer"
                                   HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto">
+                                  VerticalScrollBarVisibility="Auto"
+                                  ScrollChanged="ConsoleScrollViewer_OnScrollChanged">
                         <TextBox x:Name="ConsoleOutput"
                                  Background="Transparent"
                                  BorderThickness="0"
                                  Padding="12"
-                                 FontFamily="Consolas,Monaco,monospace"
+                                 FontFamily="Microsoft YaHei,Consolas,Monaco,monospace"
                                  FontSize="12"
                                  IsReadOnly="True"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
                                  Text="{Binding ConsoleText}"
                                  Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
-                                 CaretBrush="Transparent" />
+                                 CaretBrush="Transparent"
+                                 PropertyChanged="ConsoleOutput_PropertyChanged"/>
                     </ScrollViewer>
                 </Border>
             </Grid>

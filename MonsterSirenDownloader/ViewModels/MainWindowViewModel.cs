@@ -280,7 +280,11 @@ public class MainWindowViewModel : ViewModelBase
         var timestamp = DateTime.Now.ToString("HH:mm:ss");
         var logEntry = $"[{timestamp}] {message}\n";
 
-        Dispatcher.UIThread.InvokeAsync(() => { ConsoleText += logEntry; });
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            ConsoleText += logEntry;
+            OnPropertyChanged(nameof(ConsoleText));
+        });
     }
 
     #endregion
