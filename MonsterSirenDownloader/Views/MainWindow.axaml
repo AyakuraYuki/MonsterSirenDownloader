@@ -3,18 +3,159 @@
         xmlns:vm="using:MonsterSirenDownloader.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="640"
+        d:DesignHeight="640"
         x:Class="MonsterSirenDownloader.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="MonsterSirenDownloader">
+        Icon="/Assets/favicon.ico"
+        Title="Monster Siren Downloader">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <!-- This only sets the DataContext for the previewer in an IDE, to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Window.Styles>
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,16" />
+        </Style>
+
+        <Style Selector="TextBlock.title">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <Style Selector="TextBlock.subtitle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="LineHeight" Value="20" />
+        </Style>
+
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="24,8" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style Selector="Button.secondary">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
+            <Setter Property="Padding" Value="24,8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style Selector="ProgressBar">
+            <Setter Property="Height" Value="4" />
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemAccentColor}" />
+            <Setter Property="CornerRadius" Value="2" />
+        </Style>
+    </Window.Styles>
+
+    <Grid Margin="32" RowDefinitions="Auto,Auto,*,Auto">
+        <!-- 头部 -->
+        <Border Grid.Row="0" Classes="card">
+            <StackPanel>
+                <TextBlock Classes="title" Text="Monster Siren Downloader" />
+                <TextBlock Classes="subtitle" Text="下载塞壬唱片官网提供的原始音频文件" />
+            </StackPanel>
+        </Border>
+
+        <!-- 进度指示器 -->
+        <Border Grid.Row="1" Classes="card">
+            <StackPanel>
+                <Grid Margin="0,0,0,12" ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding StatusText}"
+                               FontWeight="Medium"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding ProgressText}"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               VerticalAlignment="Center" />
+                </Grid>
+
+                <ProgressBar Value="{Binding ProgressValue}"
+                             Maximum="100"
+                             IsIndeterminate="{Binding IsIndeterminate}" />
+            </StackPanel>
+        </Border>
+
+        <!-- 控制台输出 -->
+        <Border Grid.Row="2" Classes="card">
+            <Grid RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0"
+                           Text="控制台输出"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,12" />
+
+                <Border Grid.Row="1"
+                        Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                    <ScrollViewer x:Name="ConsoleScrollViewer"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBox x:Name="ConsoleOutput"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="12"
+                                 FontFamily="Consolas,Monaco,monospace"
+                                 FontSize="12"
+                                 IsReadOnly="True"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding ConsoleText}"
+                                 Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                 CaretBrush="Transparent" />
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- 按钮区域 -->
+        <Border Grid.Row="3" Classes="card">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8"
+                             Fill="{Binding StatusColor}"
+                             VerticalAlignment="Center"
+                             Margin="0,0,8,0" />
+                    <TextBlock Text="{Binding DetailedStatus}"
+                               FontSize="12"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Classes="secondary"
+                        Content="取消"
+                        Margin="0,0,12,0"
+                        IsEnabled="{Binding CanCancel}"
+                        Command="{Binding CancelCommand}" />
+
+                <Button Grid.Column="2"
+                        Classes="primary"
+                        Content="{Binding StartButtonText}"
+                        IsEnabled="{Binding CanStart}"
+                        Command="{Binding StartCommand}" />
+            </Grid>
+        </Border>
+    </Grid>
 
 </Window>
