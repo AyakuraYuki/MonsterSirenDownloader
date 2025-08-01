@@ -29,7 +29,7 @@ public class MainWindowViewModel : ViewModelBase
 
     #endregion
 
-    #region View绑定
+    #region 属性
 
     public string StatusText
     {
@@ -136,6 +136,22 @@ public class MainWindowViewModel : ViewModelBase
 
     #endregion
 
+    #region 方法
+
+    private void AppendToConsole(string message)
+    {
+        var timestamp = DateTime.Now.ToString("HH:mm:ss");
+        var logEntry = $"[{timestamp}] {message}\n";
+
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            ConsoleText += logEntry;
+            OnPropertyChanged(nameof(ConsoleText));
+        });
+    }
+
+    #endregion
+
     #region 初始化
 
     public MainWindowViewModel()
@@ -155,6 +171,12 @@ public class MainWindowViewModel : ViewModelBase
 
         CancelCommand = new RelayCommand(Cancel, () => CanCancel);
     }
+
+    #endregion
+
+    #region 委托
+
+    // todo
 
     #endregion
 
@@ -269,22 +291,6 @@ public class MainWindowViewModel : ViewModelBase
         _cancellationTokenSource?.Cancel();
         _isRunning = false;
         AppendToConsole("下载任务已中断");
-    }
-
-    #endregion
-
-    #region 辅助方法
-
-    private void AppendToConsole(string message)
-    {
-        var timestamp = DateTime.Now.ToString("HH:mm:ss");
-        var logEntry = $"[{timestamp}] {message}\n";
-
-        Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            ConsoleText += logEntry;
-            OnPropertyChanged(nameof(ConsoleText));
-        });
     }
 
     #endregion
